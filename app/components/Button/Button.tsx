@@ -21,7 +21,15 @@ const StyledButton = ({ type = 'primary', size = 'full', text, ...props }: Style
   }
 
   return (
-    <Pressable {...props} style={[buttonStyles.base, buttonStyles[size], buttonStyles[type]]}>
+    <Pressable
+      {...props}
+      style={isPressed => [
+        buttonStyles.base,
+        buttonStyles[size],
+        buttonStyles[type],
+        isPressed.pressed ? buttonStyles.pressedStyle : undefined,
+      ]}
+    >
       {renderChildren()}
     </Pressable>
   )
@@ -50,5 +58,9 @@ const buttonStyles = StyleSheet.create({
     backgroundColor: colors.background.light,
     borderWidth: 2,
     borderColor: colors.primary.default,
+  },
+  pressedStyle: {
+    opacity: 0.7,
+    shadowOpacity: 0.1,
   },
 })
