@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Card, Spacer, StyledButton, StyledText } from '../../components'
+import { SimpleLineIcons } from '@expo/vector-icons'
+import { Card, Header, Spacer, StyledButton, StyledText } from '../../components'
 import { AuthContext } from '../../state'
 import { colors, spacing } from '../../styles'
 
@@ -9,6 +10,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Header withIcon />
       <StyledText>You've logged in!</StyledText>
       <StyledButton text="Sign Out" onPress={signOut} />
       <Spacer size="large" />
@@ -16,8 +18,7 @@ const HomeScreen = () => {
       <StyledText color={colors.primary.default} size="large">
         Create a new skill
       </StyledText>
-      <Spacer size="xSmall" />
-
+      <Spacer size="small" />
       <Card
         header={
           <StyledText color={colors.primary.default} size="large" opacity={0.7} bold>
@@ -31,7 +32,7 @@ const HomeScreen = () => {
         }
         footer={
           <View style={styles.cardFooter}>
-            <StyledText>Icon</StyledText>
+            <SimpleLineIcons name="camera" color={colors.primary.default} size={32} />
             <StyledButton size="content" text="Create" />
           </View>
         }

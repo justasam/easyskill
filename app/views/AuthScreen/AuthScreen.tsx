@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
 
-import { Spacer, StyledButton, StyledText } from '../../components'
+import { Header, Spacer, StyledButton, StyledText } from '../../components'
 import { AuthContext } from '../../state'
 import { spacing, colors } from '../../styles'
 
@@ -10,9 +10,8 @@ const AuthScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StyledText size="large" color={colors.primary.default} bold>
-        EasySkill
-      </StyledText>
+      <Header />
+
       <Image style={styles.image} source={require('../../assets/Illustration/Hello.png')} />
       <StyledText color={colors.text.dark} size="regular">
         <StyledText bold>Create a Skill for your Google Assistant...</StyledText>
