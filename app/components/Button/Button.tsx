@@ -45,7 +45,8 @@ const buttonStyles = StyleSheet.create({
     ...shadows.buttonShadow,
   },
   content: {
-    alignSelf: 'auto',
+    alignSelf: 'baseline',
+    alignItems: 'center',
   },
   full: {
     alignSelf: 'stretch',

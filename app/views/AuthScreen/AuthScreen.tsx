@@ -5,7 +5,7 @@ import { Spacer, StyledButton, StyledText } from '../../components'
 import { AuthContext } from '../../state'
 import { spacing, colors } from '../../styles'
 
-const AuthScreen = ({ navigation }) => {
+const AuthScreen = () => {
   const { signIn } = useContext(AuthContext)
 
   return (
