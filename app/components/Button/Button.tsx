@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { Pressable, StyleSheet, PressableProps } from 'react-native'
-import { StyledText } from '..'
+import StyledText from '../Text'
 import { colors, shadows, spacing } from '../../styles'
 
 type StyledButtonProps = PropsWithChildren<
