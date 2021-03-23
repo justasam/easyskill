@@ -1,11 +1,15 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { SimpleLineIcons } from '@expo/vector-icons'
-import { Card, Header, Spacer, StyledButton, StyledText } from '../../components'
+
+import { Card, Header, Spacer, StyledButton, StyledInput, StyledText } from '../../components'
 import { AuthContext } from '../../state'
 import { colors, spacing } from '../../styles'
 
 const HomeScreen = () => {
+  const [skillName, setSkillName] = useState('')
+  const [description, setDescription] = useState('')
+
   const { signOut } = useContext(AuthContext)
 
   return (
@@ -21,14 +25,22 @@ const HomeScreen = () => {
       <Spacer size="small" />
       <Card
         header={
-          <StyledText color={colors.primary.default} size="large" opacity={0.7} bold>
-            Skill name...
-          </StyledText>
+          <StyledInput
+            textProps={{ bold: true, color: colors.primary.default, size: 'large' }}
+            placeholder="Skill name..."
+            value={skillName}
+            onChange={setSkillName}
+            placeholderColor={colors.primary.medium}
+          />
         }
         body={
-          <StyledText color={colors.primary.default} size="medium" opacity={0.7}>
-            Description...
-          </StyledText>
+          <StyledInput
+            textProps={{ color: colors.primary.default, size: 'medium', opacity: 1 }}
+            placeholder="Description..."
+            value={description}
+            onChange={setDescription}
+            placeholderColor={colors.primary.medium}
+          />
         }
         footer={
           <View style={styles.cardFooter}>
