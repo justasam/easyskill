@@ -1,27 +1,21 @@
-import React, { PropsWithChildren } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { ComponentProps, PropsWithChildren } from 'react'
+import { StyleSheet, View, Image, ImageSourcePropType } from 'react-native'
 
 import { colors, shadows, spacing } from '../../styles'
-import Spacer from '../Spacer'
-import StyledText from '../Text'
 
 type CardProps = {
-  image?: string
+  image?: ImageSourcePropType
   header?: JSX.Element
   body?: JSX.Element
   footer?: JSX.Element
+  padding?: number
 }
 
-const Card = ({ image, header, body, footer }: CardProps) => {
+const Card = ({ image, header, body, footer, padding }: CardProps) => {
   const renderHeader = () => {
     if (!header) return null
 
-    return (
-      <View>
-        {header}
-        <Spacer size="xSmall" />
-      </View>
-    )
+    return <View>{header}</View>
   }
 
   const renderBody = () => {
@@ -32,8 +26,15 @@ const Card = ({ image, header, body, footer }: CardProps) => {
     return <View style={cardStyles.footer}>{footer}</View>
   }
 
+  const renderImage = () => {
+    if (!image) return null
+
+    return <Image source={image} style={cardStyles.image} />
+  }
+
   return (
-    <View style={cardStyles.container}>
+    <View style={[cardStyles.container, padding ? { padding } : undefined]}>
+      {renderImage()}
       {renderHeader()}
       {renderBody()}
       {renderFooter()}
@@ -58,5 +59,15 @@ const cardStyles = StyleSheet.create({
   },
   footer: {
     alignSelf: 'stretch',
+  },
+  image: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    resizeMode: 'cover',
+    borderRadius: 15,
+    opacity: 0.25,
   },
 })
