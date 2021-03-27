@@ -10,6 +10,7 @@ type Props = {
   value?: string
   onChange?: (inputValue: string) => void
   placeholderColor?: ColorValue
+  multiline?: boolean
 }
 
 const StyledInput = ({
@@ -18,6 +19,7 @@ const StyledInput = ({
   textProps: { size = 'regular', bold = false, color, opacity = 1.0 },
   value,
   onChange,
+  multiline = false,
 }: Props) => {
   return (
     <TextInput
@@ -26,6 +28,7 @@ const StyledInput = ({
       value={value}
       onChangeText={onChange}
       placeholderTextColor={placeholderColor}
+      multiline={multiline}
     />
   )
 }

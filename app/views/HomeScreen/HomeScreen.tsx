@@ -15,7 +15,9 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Header withIcon />
+      <Spacer size="small" />
       <StyledText>You've logged in!</StyledText>
+      <Spacer size="xSmall" />
       <StyledButton text="Sign Out" onPress={signOut} />
       <Spacer size="large" />
 
@@ -40,11 +42,12 @@ const HomeScreen = () => {
             value={description}
             onChange={setDescription}
             placeholderColor={colors.primary.medium}
+            multiline
           />
         }
         footer={
           <View style={styles.cardFooter}>
-            <SimpleLineIcons name="camera" color={colors.primary.default} size={32} />
+            <SimpleLineIcons name="camera" color={colors.primary.default} size={28} />
             <StyledButton size="content" text="Create" />
           </View>
         }
