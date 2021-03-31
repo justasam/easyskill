@@ -21,17 +21,18 @@ const HomeScreen = () => {
   const { signOut } = useContext(AuthContext)
 
   return (
-    <ScrollView style={styles.container}>
-      <Header withIcon />
-      <Spacer size="small" />
-      <StyledText>You've logged in!</StyledText>
-      <Spacer size="xSmall" />
-      <StyledButton text="Sign Out" onPress={signOut} />
-      <Spacer size="small" />
-
+    <View style={styles.container}>
+      <View style={styles.padHorizontal}>
+        <Header withIcon />
+        <Spacer size="small" />
+        <StyledText>You've logged in!</StyledText>
+        <Spacer size="xSmall" />
+        <StyledButton text="Sign Out" onPress={signOut} />
+        <Spacer size="small" />
+      </View>
       {/* <FlatList horizontal renderItem={({}) Card} /> */}
 
-      <View style={{ height: 128, flexDirection: 'row' }}>
+      <View style={{ height: 128, flexDirection: 'row', alignSelf: 'stretch' }}>
         <CardList
           items={[
             {
@@ -55,42 +56,44 @@ const HomeScreen = () => {
       </View>
       <Spacer size="small" />
 
-      <StyledText color={colors.primary.default} size="large">
-        Create a new skill
-      </StyledText>
-      <Spacer size="small" />
-      <Card
-        header={
-          <>
+      <View style={styles.padHorizontal}>
+        <StyledText color={colors.primary.default} size="large">
+          Create a new skill
+        </StyledText>
+        <Spacer size="small" />
+        <Card
+          header={
+            <>
+              <StyledInput
+                textProps={{ bold: true, color: colors.primary.default, size: 'large' }}
+                placeholder="Skill name..."
+                value={skillName}
+                onChange={setSkillName}
+                placeholderColor={colors.primary.medium}
+              />
+              <Spacer size="xSmall" />
+            </>
+          }
+          body={
             <StyledInput
-              textProps={{ bold: true, color: colors.primary.default, size: 'large' }}
-              placeholder="Skill name..."
-              value={skillName}
-              onChange={setSkillName}
+              textProps={{ color: colors.primary.default, size: 'medium', opacity: 1 }}
+              placeholder="Description..."
+              value={description}
+              onChange={setDescription}
               placeholderColor={colors.primary.medium}
+              multiline
             />
-            <Spacer size="xSmall" />
-          </>
-        }
-        body={
-          <StyledInput
-            textProps={{ color: colors.primary.default, size: 'medium', opacity: 1 }}
-            placeholder="Description..."
-            value={description}
-            onChange={setDescription}
-            placeholderColor={colors.primary.medium}
-            multiline
-          />
-        }
-        footer={
-          <View style={styles.cardFooter}>
-            <SimpleLineIcons name="camera" color={colors.primary.default} size={28} />
-            <StyledButton size="content" text="Create" />
-          </View>
-        }
-        withShadow
-      />
-    </ScrollView>
+          }
+          footer={
+            <View style={styles.cardFooter}>
+              <SimpleLineIcons name="camera" color={colors.primary.default} size={28} />
+              <StyledButton size="content" text="Create" />
+            </View>
+          }
+          withShadow
+        />
+      </View>
+    </View>
   )
 }
 
@@ -98,8 +101,11 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
   container: {
-    padding: spacing.medium,
     alignSelf: 'stretch',
+    paddingVertical: spacing.medium,
+  },
+  padHorizontal: {
+    paddingHorizontal: spacing.medium,
   },
   cardFooter: {
     flexDirection: 'row',

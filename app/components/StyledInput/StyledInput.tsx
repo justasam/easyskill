@@ -29,6 +29,7 @@ const StyledInput = ({
       onChangeText={onChange}
       placeholderTextColor={placeholderColor}
       multiline={multiline}
+      showSoftInputOnFocus
     />
   )
 }
