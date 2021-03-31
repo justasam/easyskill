@@ -1,8 +1,16 @@
 import React, { useContext, useState } from 'react'
-import { FlatList, StyleSheet, View, ScrollView } from 'react-native'
+import { Text, StyleSheet, View, ScrollView } from 'react-native'
 import { SimpleLineIcons } from '@expo/vector-icons'
 
-import { Card, Header, Spacer, StyledButton, StyledInput, StyledText } from '../../components'
+import {
+  Card,
+  CardList,
+  Header,
+  Spacer,
+  StyledButton,
+  StyledInput,
+  StyledText,
+} from '../../components'
 import { AuthContext } from '../../state'
 import { colors, spacing } from '../../styles'
 
@@ -22,43 +30,27 @@ const HomeScreen = () => {
       <Spacer size="small" />
 
       {/* <FlatList horizontal renderItem={({}) Card} /> */}
-      <View style={{ height: 132, flexDirection: 'row' }}>
-        <Card
-          header={
-            <>
-              <StyledText size="small" numberOfLines={1} color={colors.primary.default} bold>
-                Hello world
-              </StyledText>
-              <Spacer size="xSmall" />
-            </>
-          }
-          body={
-            <StyledText size="xSmall" color={colors.primary.default}>
-              This is my first action...
-            </StyledText>
-          }
-          image={{
-            uri:
-              'https://images.unsplash.com/photo-1616345247720-417dcefef9a7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
-          }}
-          padding={spacing.small}
-        />
-        <Spacer size="xSmall" orientation="horizontal" />
-        <Card
-          header={
-            <>
-              <StyledText size="small" numberOfLines={1} color={colors.primary.default} bold>
-                Ahoy there!
-              </StyledText>
-              <Spacer size="xSmall" />
-            </>
-          }
-          body={
-            <StyledText size="xSmall" color={colors.primary.default}>
-              This is my second action...
-            </StyledText>
-          }
-          padding={spacing.small}
+
+      <View style={{ height: 128, flexDirection: 'row' }}>
+        <CardList
+          items={[
+            {
+              header: 'Hello world',
+              body: 'This is my first action...',
+              image: {
+                uri:
+                  'https://images.unsplash.com/photo-1616345247720-417dcefef9a7?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max',
+              },
+              key: 'test-i-1',
+            },
+            { header: 'Ahoy there!', body: 'This is my second action...', key: 'test-i-2' },
+            { header: 'Ahoy there!', body: 'This is my second action...', key: 'test-i-3' },
+            { header: 'Ahoy there!', body: 'This is my second action...', key: 'test-i-4' },
+            { header: 'Ahoy there!', body: 'This is my second action...', key: 'test-i-5' },
+            { header: 'Ahoy there!', body: 'This is my second action...', key: 'test-i-6' },
+            { header: 'Ahoy there!', body: 'This is my second action...', key: 'test-i-7' },
+          ]}
+          onClick={item => console.log(item)}
         />
       </View>
       <Spacer size="small" />
@@ -96,6 +88,7 @@ const HomeScreen = () => {
             <StyledButton size="content" text="Create" />
           </View>
         }
+        withShadow
       />
     </ScrollView>
   )
