@@ -1,53 +1,40 @@
-import React, { useState } from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import React from 'react'
+import { Card, ExpandableSection, View } from 'react-native-ui-lib'
 import { SimpleLineIcons } from '@expo/vector-icons'
-import { colors, spacing } from '../../styles'
+
+import StyledText from '../Text'
+import { colors } from '../../styles'
+import ExpandedProps from '../Blocks/types'
 
 type Props = {
-  content: JSX.Element
-  collapsedContent?: JSX.Element
-  forceState?: 'expand' | 'collapse'
-}
+  header: JSX.Element | string
+  children: JSX.Element
+} & ExpandedProps
 
-const Expandable = ({ content, collapsedContent, forceState }: Props) => {
-  const [isExpanded, setIsExpanded] = useState(true)
+const Expandable = ({ header, children, expanded, onExpandClick }: Props) => {
+  const renderHeader = () => {
+    if (typeof header === 'string')
+      return <StyledText color={colors.primary.default}>{header}</StyledText>
 
-  const showExpanded = forceState === 'expand' || (forceState !== 'collapse' && isExpanded)
+    return header
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>{showExpanded ? content : collapsedContent}</View>
-      <View style={styles.icon}>
-        {!forceState && (
-          <Pressable onPress={() => setIsExpanded(isExpanded => !isExpanded)}>
-            <SimpleLineIcons
-              name={showExpanded ? 'arrow-up' : 'arrow-down'}
-              color={colors.primary.default}
-              size={28}
-            />
-          </Pressable>
-        )}
-      </View>
-    </View>
+    <Card padding-16>
+      <ExpandableSection
+        expanded={expanded}
+        sectionHeader={
+          <View centerV spread row>
+            {renderHeader()}
+            <SimpleLineIcons name={'arrow-up'} color={colors.primary.default} size={24} />
+          </View>
+        }
+        onPress={onExpandClick}
+      >
+        {children}
+      </ExpandableSection>
+    </Card>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 0,
-    flexDirection: 'row',
-    backgroundColor: colors.primary.light,
-    padding: spacing.small,
-    borderRadius: 15,
-  },
-  content: {
-    flex: 1,
-    paddingRight: spacing.xSmall,
-    justifyContent: 'center',
-  },
-  icon: {
-    flex: 0,
-  },
-})
 
 export default Expandable

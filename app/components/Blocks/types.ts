@@ -1,5 +1,5 @@
 type ExpandedProps = {
-  expanded?: boolean
+  expanded: boolean
   onExpandClick: () => void
 }
 
