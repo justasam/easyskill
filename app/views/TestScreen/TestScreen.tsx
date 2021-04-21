@@ -1,11 +1,11 @@
 import React, { ComponentProps, useState } from 'react'
 import { Pressable, StyleSheet, TouchableOpacity } from 'react-native'
-import { Card, ExpandableSection, Picker, View } from 'react-native-ui-lib'
+import { Card, ExpandableSection, KeyboardAwareScrollView, Picker, View } from 'react-native-ui-lib'
 import { SimpleLineIcons } from '@expo/vector-icons'
 
 import { Expandable, Spacer, StyledInput, StyledText } from '../../components'
 import { colors, spacing } from '../../styles'
-import { BlockSkillName } from '../../components/Blocks'
+import { BlockData, BlockSkillName } from '../../components/Blocks'
 
 const renderOutput = (output: string, color?: ComponentProps<typeof StyledText>['color']) => {
   return (
@@ -70,57 +70,23 @@ const TestScreen = () => {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView style={styles.container}>
       <BlockSkillName
         skillName={skillName}
         setSkillName={setSkillName}
         expanded={expanded}
         onExpandClick={() => setExpanded(exp => !exp)}
+        onSaveSkillName={() => {}}
       />
-      <Card padding-10>
-        <ExpandableSection
-          expanded={expanded}
-          sectionHeader={
-            <View centerV spread row>
-              <StyledText color={colors.primary.default}>Select data</StyledText>
-              <SimpleLineIcons name={'arrow-up'} color={colors.primary.default} size={28} />
-            </View>
-          }
-          onPress={() => setExpanded(expanded => !expanded)}
-        >
-          <View>
-            <Picker placeholder="Data Type" value="list" floatingPlaceholder useNativePicker>
-              <Picker.Item key="none" value="none" label="None" />
-              <Picker.Item value="list" label="List" />
-              <Picker.Item value="quiz" label="Quiz" />
-            </Picker>
-          </View>
-        </ExpandableSection>
-      </Card>
-      <Expandable
-        content={
-          <View>
-            <Picker placeholder="Data Type" value="list" floatingPlaceholder useNativePicker>
-              <Picker.Item key="none" value="none" label="None" />
-              <Picker.Item value="list" label="List" />
-              <Picker.Item value="quiz" label="Quiz" />
-            </Picker>
-          </View>
-        }
-        collapsedContent={<StyledText>&gt;&gt;Alexa, open skill name</StyledText>}
+      <Spacer size="small" />
+      <BlockData
+        skillName={skillName}
+        setSkillName={setSkillName}
+        expanded={expanded}
+        onExpandClick={() => setExpanded(exp => !exp)}
       />
-      <Pressable onPress={() => setFocusedBlock('')}>
-        <SkillNameBlock
-          skillName={skillName}
-          setSkillName={newVal => {
-            setSkillName(newVal)
-            setFocusedBlock('SKILL_NAME')
-          }}
-          focused={focusedBlock === 'SKILL_NAME'}
-          onPress={() => setFocusedBlock('SKILL_NAME')}
-        />
-      </Pressable>
-    </View>
+      <Spacer size="small" />
+    </KeyboardAwareScrollView>
   )
 }
 
@@ -140,6 +106,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: spacing.medium,
+    alignSelf: 'stretch',
   },
 })
 

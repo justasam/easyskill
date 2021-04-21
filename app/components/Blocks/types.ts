@@ -3,4 +3,16 @@ type ExpandedProps = {
   onExpandClick: () => void
 }
 
-export default ExpandedProps
+type DataNumberType = {
+  title: string
+  dataName: string
+  value: string
+}
+
+type DataTextType = {
+  title: string
+  dataName: string
+  value: string
+}
+
+export { ExpandedProps, DataNumberType, DataTextType }

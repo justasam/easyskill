@@ -1,5 +1,5 @@
 import React, { ComponentProps } from 'react'
-import { ColorValue, TextInput, ViewStyle } from 'react-native'
+import { ColorValue, KeyboardTypeOptions, TextInput, ViewStyle } from 'react-native'
 
 import { colors, textStyles } from '../../styles'
 import StyledText from '../Text'
@@ -13,6 +13,7 @@ type Props = {
   multiline?: boolean
   underline?: boolean
   autoFocus?: boolean
+  keyboardType?: KeyboardTypeOptions
 }
 
 const StyledInput = ({
@@ -24,6 +25,7 @@ const StyledInput = ({
   multiline = false,
   underline = false,
   autoFocus = false,
+  keyboardType,
 }: Props) => {
   const underlineStyle: ViewStyle = {
     borderBottomColor: colors.primary.medium,
@@ -43,6 +45,7 @@ const StyledInput = ({
       onChangeText={onChange}
       placeholderTextColor={placeholderColor}
       multiline={multiline}
+      keyboardType={keyboardType}
       autoFocus={autoFocus}
       showSoftInputOnFocus
     />

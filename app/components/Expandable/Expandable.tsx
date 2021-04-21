@@ -4,7 +4,7 @@ import { SimpleLineIcons } from '@expo/vector-icons'
 
 import StyledText from '../Text'
 import { colors } from '../../styles'
-import ExpandedProps from '../Blocks/types'
+import { ExpandedProps } from '../Blocks/types'
 
 type Props = {
   header: JSX.Element | string
@@ -14,7 +14,11 @@ type Props = {
 const Expandable = ({ header, children, expanded, onExpandClick }: Props) => {
   const renderHeader = () => {
     if (typeof header === 'string')
-      return <StyledText color={colors.primary.default}>{header}</StyledText>
+      return (
+        <StyledText color={colors.primary.default} bold>
+          {header}
+        </StyledText>
+      )
 
     return header
   }
@@ -26,7 +30,11 @@ const Expandable = ({ header, children, expanded, onExpandClick }: Props) => {
         sectionHeader={
           <View centerV spread row>
             {renderHeader()}
-            <SimpleLineIcons name={'arrow-up'} color={colors.primary.default} size={24} />
+            <SimpleLineIcons
+              name={expanded ? 'arrow-up' : 'arrow-down'}
+              color={colors.primary.default}
+              size={24}
+            />
           </View>
         }
         onPress={onExpandClick}

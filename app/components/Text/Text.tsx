@@ -10,6 +10,7 @@ type StyledTextProps = PropsWithChildren<
     size?: 'xSmall' | 'small' | 'regular' | 'medium' | 'large'
     opacity?: number
     numberOfLines?: number | undefined
+    italic?: boolean
   } & TextProps
 >
 
@@ -18,13 +19,19 @@ const StyledText = ({
   color = colors.text.dark,
   size = 'regular',
   opacity = 1,
+  italic = false,
   numberOfLines,
   ...props
 }: StyledTextProps) => {
   return (
     <Text
       {...props}
-      style={[textStyles[size], bold ? textStyles.bold : textStyles.base, { color, opacity }]}
+      style={[
+        textStyles[size],
+        bold ? textStyles.bold : textStyles.base,
+        { color, opacity },
+        italic ? { fontStyle: 'italic' } : undefined,
+      ]}
       numberOfLines={numberOfLines}
     />
   )
