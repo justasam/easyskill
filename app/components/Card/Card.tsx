@@ -11,9 +11,19 @@ type CardProps = {
   onClick?: () => void
   padding?: number
   withShadow?: boolean
+  square?: boolean
 }
 
-const Card = ({ image, header, body, footer, padding, withShadow = false, onClick }: CardProps) => {
+const Card = ({
+  image,
+  header,
+  body,
+  footer,
+  padding,
+  withShadow = false,
+  square = true,
+  onClick,
+}: CardProps) => {
   const renderHeader = () => {
     if (!header) return null
 
@@ -47,6 +57,7 @@ const Card = ({ image, header, body, footer, padding, withShadow = false, onClic
     cardStyles.container,
     padding ? { padding } : undefined,
     withShadow ? shadows.cardShadow : undefined,
+    square ? { aspectRatio: 1 } : { flex: 1 },
   ]
 
   if (onClick)
@@ -67,7 +78,6 @@ const cardStyles = StyleSheet.create({
     backgroundColor: colors.primary.lighter,
     borderRadius: 15,
     padding: spacing.medium,
-    aspectRatio: 1,
     justifyContent: 'space-between',
   },
   body: {

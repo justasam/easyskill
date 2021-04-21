@@ -1,4 +1,5 @@
 const spacing = {
+  letter: 4,
   xSmall: 8,
   small: 16,
   medium: 24,

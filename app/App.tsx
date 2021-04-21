@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 
 import { colors } from './styles'
-import { AuthScreen, HomeScreen } from './views'
+import { AuthScreen, HomeScreen, TestScreen } from './views'
 import { AuthContext } from './state'
 
 const Stack = createStackNavigator()
@@ -90,6 +90,8 @@ const App = () => {
   }
 
   const renderScreens = () => {
+    return <Stack.Screen name="Test" component={TestScreen} />
+
     if (state.isLoading || !fontsLoaded)
       return <Stack.Screen name="Splash" component={AppLoading} />
 
