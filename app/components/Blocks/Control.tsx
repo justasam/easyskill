@@ -1,23 +1,161 @@
 import React from 'react'
-import { View } from 'react-native-ui-lib'
+import { Button, Card, Carousel, View } from 'react-native-ui-lib'
 
 import Expandable from '../Expandable'
 import StyledText from '../Text'
 import { ExpandedProps } from './types'
 import { colors } from '../../styles'
+import { Spacer } from '..'
+import { renderControlYou } from './renderData'
 
 type Props = { enabled?: boolean } & ExpandedProps
+
+type AllControlState = {}
 
 const Control = ({ enabled, onExpandClick, expanded }: Props) => {
   const renderBody = () => {
     return (
       <>
         <StyledText color={colors.text.dark} size="small">
-          Okay.. Last step, I promise!
+          Last step! Think of logic in a top to bottom sequence.
         </StyledText>
-        <StyledText color={colors.text.secondary} size="small">
-          Try thinking of logic in a top to bottom way
-        </StyledText>
+        <Spacer size="small" />
+
+        <View style={{ backgroundColor: colors.primary.default }} br40 padding-5>
+          <View padding-10>
+            <StyledText color={colors.text.light} size="small">
+              Swipe and add control blocks:
+            </StyledText>
+          </View>
+
+          <Carousel>
+            <Card containerStyle={{ height: 120 }} center margin-5>
+              <View paddingR-20 row centerV spread>
+                <Card.Section
+                  content={[
+                    { text: 'You 🗣️', dark10: true, text70BO: true },
+                    { text: 'what you want to say to Alexa', text90: true, dark50: true },
+                  ]}
+                  style={{ padding: 20, flex: 1 }}
+                />
+                <Button
+                  label="Add"
+                  onPress={undefined}
+                  borderRadius={8}
+                  backgroundColor={colors.primary.medium}
+                />
+              </View>
+            </Card>
+            <Card containerStyle={{ height: 120 }} center margin-5>
+              <View paddingR-20 row centerV spread>
+                <Card.Section
+                  content={[
+                    { text: 'Alexa 🤖', dark10: true, text70BO: true },
+                    { text: 'what you want Alexa to say', text90: true, dark50: true },
+                  ]}
+                  style={{ padding: 20, flex: 1 }}
+                />
+                <Button
+                  label="Add"
+                  onPress={undefined}
+                  borderRadius={8}
+                  backgroundColor={colors.primary.medium}
+                />
+              </View>
+            </Card>
+            <Card containerStyle={{ height: 120 }} center margin-5>
+              <View paddingR-20 row centerV spread>
+                <Card.Section
+                  content={[
+                    { text: 'Compare ✔️', dark10: true, text70BO: true },
+                    {
+                      text: 'Compare two values and do something depending on the result',
+                      text90: true,
+                      dark50: true,
+                    },
+                  ]}
+                  style={{ padding: 20, flex: 1 }}
+                />
+                <Button
+                  label="Add"
+                  onPress={undefined}
+                  borderRadius={8}
+                  backgroundColor={colors.primary.medium}
+                />
+              </View>
+            </Card>
+            <Card containerStyle={{ height: 120 }} center margin-5>
+              <View paddingR-20 row centerV spread>
+                <Card.Section
+                  content={[
+                    { text: 'Math 🧮', dark10: true, text70BO: true },
+                    {
+                      text: 'Perform a mathematical operation',
+                      text90: true,
+                      dark50: true,
+                    },
+                  ]}
+                  style={{ padding: 20, flex: 1 }}
+                />
+                <Button
+                  label="Add"
+                  onPress={undefined}
+                  borderRadius={8}
+                  backgroundColor={colors.primary.medium}
+                />
+              </View>
+            </Card>
+            <Card containerStyle={{ height: 120 }} center margin-5>
+              <View paddingR-20 row centerV spread>
+                <Card.Section
+                  content={[
+                    { text: 'Random 🎲', dark10: true, text70BO: true },
+                    {
+                      text: 'Pick a random element from a list or generate a random number',
+                      text90: true,
+                      dark50: true,
+                    },
+                  ]}
+                  style={{ padding: 20, flex: 1 }}
+                />
+                <Button
+                  label="Add"
+                  onPress={undefined}
+                  borderRadius={8}
+                  backgroundColor={colors.primary.medium}
+                />
+              </View>
+            </Card>
+            <Card containerStyle={{ height: 120 }} center margin-5>
+              <View paddingR-20 row centerV spread>
+                <Card.Section
+                  content={[
+                    { text: 'API ✨', dark10: true, text70BO: true },
+                    {
+                      text: 'get external data for movies, numbers, etc',
+                      text90: true,
+                      dark50: true,
+                    },
+                  ]}
+                  style={{ padding: 20, flex: 1 }}
+                />
+                <Button
+                  label="Add"
+                  onPress={undefined}
+                  borderRadius={8}
+                  backgroundColor={colors.primary.medium}
+                />
+              </View>
+            </Card>
+          </Carousel>
+        </View>
+        {renderControlYou({
+          value: '',
+          setValue: undefined,
+          title: 'You 🗣️',
+          key: 'abc',
+          onCloseData: () => null,
+        })}
       </>
     )
   }

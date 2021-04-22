@@ -29,7 +29,7 @@ const Expandable = ({ header, children, expanded, onExpandClick }: Props) => {
         expanded={expanded}
         sectionHeader={
           <View centerV spread row>
-            {renderHeader()}
+            <View flex>{renderHeader()}</View>
             <SimpleLineIcons
               name={expanded ? 'arrow-up' : 'arrow-down'}
               color={colors.primary.default}

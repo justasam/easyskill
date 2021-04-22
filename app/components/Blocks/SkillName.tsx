@@ -32,7 +32,7 @@ const SkillName = ({
             placeholder="my skill"
             prefix="Alexa, open"
             color={colors.primary.default}
-            prefixStyle={{ fontWeight: 'regular' }}
+            prefixStyle={{ fontWeight: 'normal' }}
             style={{ fontWeight: 'bold' }}
           />
         </View>

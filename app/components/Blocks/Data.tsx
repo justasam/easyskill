@@ -47,6 +47,8 @@ const Data = ({ dataBlocks, enabled = true, onSaveData, expanded, onExpandClick 
   const [editingBlocks, setEditingBlocks] = useState([...dataBlocks])
   const [selectedValue, setSelectedValue] = useState('none')
 
+  const dataNames = editingBlocks.map(({ dataName }) => dataName).filter(name => name !== '')
+
   const renderBlocks = () => {
     return editingBlocks.map((dataBlock, index) => {
       const onCloseData = () => {
@@ -124,7 +126,11 @@ const Data = ({ dataBlocks, enabled = true, onSaveData, expanded, onExpandClick 
   }
 
   return (
-    <Expandable header="Skill data" onExpandClick={onExpandClick} expanded={expanded}>
+    <Expandable
+      header={`Skill data ${dataNames.length ? `(${dataNames.join(', ')})` : ''}`}
+      onExpandClick={onExpandClick}
+      expanded={expanded}
+    >
       <View paddingV-8>{enabled ? renderBody() : renderNotEnabled()}</View>
     </Expandable>
   )

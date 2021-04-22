@@ -4,6 +4,7 @@ import { SimpleLineIcons } from '@expo/vector-icons'
 
 import StyledText from '../Text'
 import { colors } from '../../styles'
+import { InputBlock } from '..'
 
 type DataHeaderProps = {
   title: string
@@ -30,6 +31,13 @@ type DataTextProps = {
 } & DataHeaderProps &
   DataFooterProps
 
+type ControlYouProps = {
+  value: string
+  setValue: (value: string) => void
+  key: number | string
+} & DataHeaderProps &
+  DataFooterProps
+
 const renderDataHeader = ({ title, onCloseData }: DataHeaderProps) => {
   return (
     <View row spread centerV>
@@ -48,23 +56,25 @@ const renderDataFooter = ({
   setDataName,
   placeholder = 'SavedData',
 }: DataFooterProps) => {
-  const transformer = (value: string) => {
-    return value.replace(/\s/g, '')
-  }
-
   return (
-    <View row spread centerV>
-      <View flex>
-        <TextField
-          title="Name it for later use:"
-          placeholder={placeholder}
-          underlineColor={{ focus: colors.primary.default }}
-          value={dataName}
-          transformer={transformer}
-          onChangeText={setDataName}
-        />
-      </View>
-    </View>
+    <InputBlock
+      contents={[
+        {
+          type: 'row',
+          elements: [
+            {
+              type: 'one-word',
+              value: dataName,
+              onChange: setDataName,
+              placeholder,
+              elementType: 'text-field',
+              title: 'Name it for later use:',
+            },
+          ],
+          key: `df-${placeholder}`,
+        },
+      ]}
+    />
   )
 }
 
@@ -77,35 +87,27 @@ const renderDataNumber = ({
   setDataName,
   key,
 }: DataNumberProps) => {
-  const transformToNum = (oldValue: string) => {
-    const containsDotOrComma = oldValue.indexOf('.') !== -1 || oldValue.indexOf(',') !== -1
-    const resFloat = parseFloat(oldValue)
-    if (Number.isNaN(resFloat)) return ''
-    if (!resFloat && oldValue === '0') return '0'
-
-    let resString = `${resFloat}`
-
-    if (parseInt(resString) === resFloat && containsDotOrComma) resString += '.'
-
-    return resString
-  }
-
   return (
-    <View padding-16 marginT-16 bg-dark80 br40 key={`${key}-${title}`}>
+    <View padding-16 marginT-16 bg-purple80 br40 key={`${key}-${title}`}>
       {renderDataHeader({ title, onCloseData })}
-      <View row spread centerV>
-        <View flex>
-          <TextField
-            title="Enter starting value:"
-            placeholder="E.g. 0"
-            underlineColor={{ focus: colors.primary.default }}
-            value={value}
-            onChangeText={setValue}
-            keyboardType="numeric"
-            transformer={transformToNum}
-          />
-        </View>
-      </View>
+      <InputBlock
+        contents={[
+          {
+            type: 'row',
+            elements: [
+              {
+                type: 'number',
+                value,
+                onChange: setValue,
+                placeholder: 'E.g. 0',
+                elementType: 'text-field',
+                title: 'Enter starting value:',
+              },
+            ],
+            key: `${key}-${title}`,
+          },
+        ]}
+      />
       {renderDataFooter({ dataName, setDataName, placeholder: 'E.g. age' })}
     </View>
   )
@@ -121,22 +123,56 @@ const renderDataText = ({
   key,
 }: DataTextProps) => {
   return (
-    <View padding-16 marginT-16 bg-dark80 br40 key={`${key}-${title}`}>
+    <View padding-16 marginT-16 bg-violet80 br40 key={`${key}-${title}`}>
       {renderDataHeader({ title, onCloseData })}
-      <View row spread centerV>
-        <View flex>
-          <TextField
-            title="Enter initial text:"
-            placeholder="E.g. John"
-            underlineColor={{ focus: colors.primary.default }}
-            value={value}
-            onChangeText={setValue}
-          />
-        </View>
-      </View>
+      <InputBlock
+        contents={[
+          {
+            type: 'row',
+            elements: [
+              {
+                type: 'text',
+                value,
+                onChange: setValue,
+                placeholder: 'E.g. John',
+                elementType: 'text-field',
+                title: 'Enter initial text:',
+              },
+            ],
+            key: `${key}-${title}`,
+          },
+        ]}
+      />
       {renderDataFooter({ dataName, setDataName, placeholder: 'E.g. name' })}
     </View>
   )
 }
 
-export { renderDataFooter, renderDataHeader, renderDataText, renderDataNumber }
+const renderControlYou = ({ value, setValue, title, onCloseData, key }: ControlYouProps) => {
+  return (
+    <View padding-16 marginT-16 bg-violet70 br40 key={`${key}-${title}`}>
+      {renderDataHeader({ title, onCloseData })}
+      <InputBlock
+        contents={[
+          {
+            type: 'row',
+            elements: [
+              {
+                type: 'text',
+                value,
+                onChange: setValue,
+                placeholder: 'E.g. I pick {answer}',
+                elementType: 'text-field',
+                title: "Enter what you'll say to Alexa:",
+              },
+            ],
+            key: `${key}`,
+          },
+        ]}
+      />
+      <StyledText size="xSmall">ℹ️ wrap values you want to save with brackets.</StyledText>
+    </View>
+  )
+}
+
+export { renderDataFooter, renderDataHeader, renderDataText, renderDataNumber, renderControlYou }
