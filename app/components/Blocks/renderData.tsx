@@ -1,9 +1,8 @@
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native-ui-lib'
+import { TouchableOpacity, View, TextField } from 'react-native-ui-lib'
 import { SimpleLineIcons } from '@expo/vector-icons'
 
 import StyledText from '../Text'
-import StyledInput from '../StyledInput'
 import { colors } from '../../styles'
 
 type DataHeaderProps = {
@@ -20,12 +19,14 @@ type DataFooterProps = {
 type DataNumberProps = {
   value: string
   setValue: (value: string) => void
+  key: number | string
 } & DataHeaderProps &
   DataFooterProps
 
 type DataTextProps = {
   value: string
   setValue: (value: string) => void
+  key: number | string
 } & DataHeaderProps &
   DataFooterProps
 
@@ -47,16 +48,20 @@ const renderDataFooter = ({
   setDataName,
   placeholder = 'SavedData',
 }: DataFooterProps) => {
+  const transformer = (value: string) => {
+    return value.replace(/\s/g, '')
+  }
+
   return (
     <View row spread centerV>
       <View flex>
-        <StyledText size="small">Name it for later use:</StyledText>
-        <StyledInput
+        <TextField
+          title="Name it for later use:"
           placeholder={placeholder}
+          underlineColor={{ focus: colors.primary.default }}
           value={dataName}
-          onChange={setDataName}
-          textProps={{ color: colors.primary.medium }}
-          underline
+          transformer={transformer}
+          onChangeText={setDataName}
         />
       </View>
     </View>
@@ -70,20 +75,34 @@ const renderDataNumber = ({
   onCloseData,
   dataName,
   setDataName,
+  key,
 }: DataNumberProps) => {
+  const transformToNum = (oldValue: string) => {
+    const containsDotOrComma = oldValue.indexOf('.') !== -1 || oldValue.indexOf(',') !== -1
+    const resFloat = parseFloat(oldValue)
+    if (Number.isNaN(resFloat)) return ''
+    if (!resFloat && oldValue === '0') return '0'
+
+    let resString = `${resFloat}`
+
+    if (parseInt(resString) === resFloat && containsDotOrComma) resString += '.'
+
+    return resString
+  }
+
   return (
-    <View padding-16 marginT-16 bg-dark80 br40>
+    <View padding-16 marginT-16 bg-dark80 br40 key={`${key}-${title}`}>
       {renderDataHeader({ title, onCloseData })}
-      <View row spread centerV marginB-16>
-        <View flex marginT-16>
-          <StyledText size="small">Enter starting value (type 0 if not sure):</StyledText>
-          <StyledInput
+      <View row spread centerV>
+        <View flex>
+          <TextField
+            title="Enter starting value:"
             placeholder="E.g. 0"
+            underlineColor={{ focus: colors.primary.default }}
             value={value}
-            onChange={setValue}
-            textProps={{ color: colors.primary.medium }}
+            onChangeText={setValue}
             keyboardType="numeric"
-            underline
+            transformer={transformToNum}
           />
         </View>
       </View>
@@ -99,19 +118,19 @@ const renderDataText = ({
   onCloseData,
   dataName,
   setDataName,
+  key,
 }: DataTextProps) => {
   return (
-    <View padding-16 marginT-16 bg-dark80 br40>
+    <View padding-16 marginT-16 bg-dark80 br40 key={`${key}-${title}`}>
       {renderDataHeader({ title, onCloseData })}
-      <View row spread centerV marginB-16>
-        <View flex marginT-16>
-          <StyledText size="small">Enter initial text:</StyledText>
-          <StyledInput
+      <View row spread centerV>
+        <View flex>
+          <TextField
+            title="Enter initial text:"
             placeholder="E.g. John"
+            underlineColor={{ focus: colors.primary.default }}
             value={value}
-            onChange={setValue}
-            textProps={{ color: colors.primary.medium }}
-            underline
+            onChangeText={setValue}
           />
         </View>
       </View>

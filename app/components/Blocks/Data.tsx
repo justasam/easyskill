@@ -2,15 +2,12 @@ import React, { useState } from 'react'
 import { Button, Picker, View } from 'react-native-ui-lib'
 
 import StyledText from '../Text'
-import { ExpandedProps } from './types'
+import { CompoundDataType, ExpandedProps } from './types'
 import { colors } from '../../styles'
 import { Expandable } from '..'
 import { renderDataNumber, renderDataText } from './renderData'
 
-type Props = {
-  skillName: string
-  setSkillName: (value: string) => void
-} & ExpandedProps
+type Props = CompoundDataType & ExpandedProps
 
 type TypePickerProps = {
   items: Array<{ label: string; value: string }>
@@ -18,9 +15,11 @@ type TypePickerProps = {
   onSelect: (value: string) => void
 }
 
+const addDisabledTypes = ['none']
+
 const TypePicker = ({ items, selectedValue, onSelect }: TypePickerProps) => {
   return (
-    <View flex marginR-24>
+    <View flex marginR-24 centerV marginT-16>
       <Picker
         placeholder="Data Type"
         value={selectedValue}
@@ -44,65 +43,89 @@ const dataTypes = [
   { value: 'number', label: 'Number' },
 ]
 
-const Data = ({ skillName, setSkillName, expanded, onExpandClick }: Props) => {
+const Data = ({ dataBlocks, enabled = true, onSaveData, expanded, onExpandClick }: Props) => {
+  const [editingBlocks, setEditingBlocks] = useState([...dataBlocks])
   const [selectedValue, setSelectedValue] = useState('none')
 
-  return (
-    <Expandable header="Skill data" onExpandClick={onExpandClick} expanded={expanded}>
-      <View paddingV-8>
+  const renderBlocks = () => {
+    return editingBlocks.map((dataBlock, index) => {
+      const onCloseData = () => {
+        const newBlocks = [...editingBlocks]
+        newBlocks.splice(index, 1)
+        setEditingBlocks(newBlocks)
+      }
+      const setDataName = (name: string) => {
+        const newBlocks = [...editingBlocks]
+        newBlocks[index].dataName = name
+        setEditingBlocks(newBlocks)
+      }
+      const setValue = (value: string) => {
+        const newBlocks = [...editingBlocks]
+        newBlocks[index].value = value
+        setEditingBlocks(newBlocks)
+      }
+
+      if (dataBlock.title === 'Number')
+        return renderDataNumber({
+          ...dataBlock,
+          onCloseData,
+          setDataName,
+          setValue,
+          key: index,
+        })
+
+      if (dataBlock.title === 'Text')
+        return renderDataText({ ...dataBlock, onCloseData, setDataName, setValue, key: index })
+    })
+  }
+
+  const renderBody = () => {
+    return (
+      <>
         <StyledText color={colors.text.dark} size="small">
           Now lets set up initial data that your app will use. E.g. list of friends, score..
         </StyledText>
-
-        {renderDataNumber({
-          title: 'Number',
-          onCloseData: () => null,
-          dataName: '',
-          setDataName: () => null,
-          value: '0',
-          setValue: () => null,
-        })}
-
-        {renderDataText({
-          title: 'Text',
-          onCloseData: () => null,
-          dataName: '',
-          setDataName: () => null,
-          value: '',
-          setValue: () => null,
-        })}
-
-        {renderDataNumber({
-          title: 'Number',
-          onCloseData: () => null,
-          dataName: '',
-          setDataName: () => null,
-          value: '0',
-          setValue: () => null,
-        })}
-
-        {renderDataText({
-          title: 'Text',
-          onCloseData: () => null,
-          dataName: '',
-          setDataName: () => null,
-          value: '',
-          setValue: () => null,
-        })}
+        {renderBlocks()}
         <View row spread paddingV-24 centerV>
           <TypePicker items={dataTypes} selectedValue={selectedValue} onSelect={setSelectedValue} />
-          <Button label="Add" borderRadius={8} backgroundColor={colors.primary.medium} />
+          <Button
+            label="Add"
+            borderRadius={8}
+            backgroundColor={colors.primary.medium}
+            onPress={() => {
+              const title = dataTypes.find(({ value }) => value === selectedValue)?.label
+              if (!title || (title !== 'Number' && title !== 'Text')) return
+              setEditingBlocks(editingBlocks => [
+                ...editingBlocks,
+                {
+                  dataName: '',
+                  value: '',
+                  title,
+                },
+              ])
+            }}
+            disabled={addDisabledTypes.includes(selectedValue)}
+          />
         </View>
-
         <View>
           <Button
             label="Done"
-            onPress={undefined}
+            onPress={() => onSaveData(editingBlocks)}
             borderRadius={8}
             backgroundColor={colors.primary.medium}
           />
         </View>
-      </View>
+      </>
+    )
+  }
+
+  const renderNotEnabled = () => {
+    return <StyledText>Set skill name first</StyledText>
+  }
+
+  return (
+    <Expandable header="Skill data" onExpandClick={onExpandClick} expanded={expanded}>
+      <View paddingV-8>{enabled ? renderBody() : renderNotEnabled()}</View>
     </Expandable>
   )
 }

@@ -1,10 +1,9 @@
 import React from 'react'
-import { Button, View } from 'react-native-ui-lib'
+import { Button, TextField, View } from 'react-native-ui-lib'
 
-import StyledText from '../Text'
 import { ExpandedProps } from './types'
 import { colors } from '../../styles'
-import { Expandable, Spacer, StyledInput } from '..'
+import { Expandable } from '..'
 
 type Props = {
   skillName: string
@@ -26,16 +25,15 @@ const SkillName = ({
       expanded={expanded}
     >
       <View>
-        <View row paddingV-16>
-          <StyledText color={colors.text.dark}>Alexa, open</StyledText>
-          <Spacer size="letter" orientation="horizontal" />
-          <StyledInput
-            placeholder="my skill"
+        <View row paddingT-16>
+          <TextField
             value={skillName}
-            onChange={setSkillName}
-            textProps={{ color: colors.primary.medium }}
-            autoFocus
-            underline
+            onChangeText={setSkillName}
+            placeholder="my skill"
+            prefix="Alexa, open"
+            color={colors.primary.default}
+            prefixStyle={{ fontWeight: 'regular' }}
+            style={{ fontWeight: 'bold' }}
           />
         </View>
         <Button
@@ -43,6 +41,7 @@ const SkillName = ({
           onPress={onSaveSkillName}
           borderRadius={8}
           backgroundColor={colors.primary.medium}
+          disabled={skillName.length < 3}
         />
       </View>
     </Expandable>
