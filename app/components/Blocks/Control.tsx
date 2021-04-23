@@ -6,7 +6,7 @@ import StyledText from '../Text'
 import { ExpandedProps } from './types'
 import { colors } from '../../styles'
 import { Spacer } from '..'
-import { renderControlYou } from './renderData'
+import { renderControlAlexa, renderControlYou } from './renderData'
 
 type Props = { enabled?: boolean } & ExpandedProps
 
@@ -151,10 +151,16 @@ const Control = ({ enabled, onExpandClick, expanded }: Props) => {
         </View>
         {renderControlYou({
           value: '',
-          setValue: undefined,
-          title: 'You 🗣️',
+          setValue: () => null,
           key: 'abc',
           onCloseData: () => null,
+        })}
+        {renderControlAlexa({
+          value: '',
+          setValue: () => null,
+          key: 'abcd',
+          onCloseData: () => null,
+          availableVariables: ['score', 'answer1', 'question', 'number', 'asdasd'],
         })}
       </>
     )
