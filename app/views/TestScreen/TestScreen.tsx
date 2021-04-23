@@ -14,8 +14,20 @@ import { Expandable, Spacer, StyledInput, StyledText } from '../../components'
 import { colors, spacing } from '../../styles'
 import { BlockControl, BlockData, BlockSkillName } from '../../components/Blocks'
 import { DataBlocks, DataTypes } from '../../components/Blocks/types'
+import { SkillState } from '../../types'
 
 const TestScreen = () => {
+  const [allState, setAllState] = useState<SkillState>({
+    isEditing: true,
+    isPublished: false,
+    isPrivate: false,
+    stepsDone: 0,
+    skillName: '',
+    author: 'test@gmail.com',
+    initialData: [],
+    variables: [],
+    sequence: [],
+  })
   const [skillName, setSkillName] = useState('')
   const [expanded, setExpanded] = useState('skill_name')
   const [dataBlocks, setDataBlocks] = useState<Array<DataTypes>>([])

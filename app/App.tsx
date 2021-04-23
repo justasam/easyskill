@@ -10,6 +10,9 @@ import { colors } from './styles'
 import { AuthScreen, HomeScreen, TestScreen } from './views'
 import { AuthContext } from './state'
 
+import { Provider } from 'react-redux'
+import store from './redux/store'
+
 const Stack = createStackNavigator()
 
 type AppStateType = {
@@ -110,15 +113,17 @@ const App = () => {
   }
 
   return (
-    <AuthContext.Provider value={authContext}>
-      <SafeAreaView style={styles.safeView}>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {renderScreens()}
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
-    </AuthContext.Provider>
+    <Provider store={store}>
+      <AuthContext.Provider value={authContext}>
+        <SafeAreaView style={styles.safeView}>
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              {renderScreens()}
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SafeAreaView>
+      </AuthContext.Provider>
+    </Provider>
   )
 }
 
