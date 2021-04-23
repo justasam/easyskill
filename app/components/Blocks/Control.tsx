@@ -6,7 +6,7 @@ import StyledText from '../Text'
 import { ExpandedProps } from './types'
 import { colors } from '../../styles'
 import { Spacer } from '..'
-import { renderControlAlexa, renderControlYou } from './renderData'
+import { renderControlAlexa, renderControlCompare, renderControlYou } from './renderData'
 
 type Props = { enabled?: boolean } & ExpandedProps
 
@@ -161,6 +161,17 @@ const Control = ({ enabled, onExpandClick, expanded }: Props) => {
           key: 'abcd',
           onCloseData: () => null,
           availableVariables: ['score', 'answer1', 'question', 'number', 'asdasd'],
+        })}
+        {renderControlCompare({
+          leftValue: 'test',
+          rightValue: '',
+          comparisonType: '<',
+          setComparisonType: () => null,
+          setLeftValue: () => null,
+          setRightValue: () => null,
+          onCloseData: () => null,
+          availableVariables: ['test'],
+          key: 'assd',
         })}
       </>
     )

@@ -6,6 +6,7 @@ import StyledText from '../Text'
 import { colors } from '../../styles'
 import { InputBlock, Spacer } from '..'
 import { runValidations, validations } from '../InputBlock/InputBlock'
+import { IBElements, IBPicker, IBTextField } from '../../types'
 
 type DataHeaderProps = {
   title?: string
@@ -252,6 +253,135 @@ const renderControlAlexa = ({
   )
 }
 
+type ControlCompareProps = {
+  leftValue: string
+  rightValue: string
+  comparisonType: '>' | '<' | '==' | '>=' | '<='
+  setLeftValue: (leftValue: string) => void
+  setRightValue: (rightValue: string) => void
+  setComparisonType: (comparisonType: string) => void
+  availableVariables: Array<string>
+  key: number | string
+} & DataHeaderProps
+
+const renderControlCompare = ({
+  leftValue,
+  rightValue,
+  comparisonType,
+  setLeftValue,
+  setRightValue,
+  setComparisonType,
+  availableVariables,
+  key,
+  onCloseData,
+}: ControlCompareProps) => {
+  const [isLeftInput, setIsLeftInput] = useState(
+    !!leftValue || availableVariables.includes(leftValue),
+  )
+  const [isRightInput, setIsRightInput] = useState(
+    !!rightValue || availableVariables.includes(rightValue),
+  )
+
+  const availablePickers = {
+    left: availableVariables.filter(variable => variable !== rightValue).length > 0,
+    right: availableVariables.filter(variable => variable !== leftValue).length > 0,
+  }
+
+  const leftElement = (): IBPicker | IBTextField => {
+    if (isLeftInput || !availablePickers.left)
+      return {
+        type: 'text',
+        value: leftValue,
+        onChange: setLeftValue,
+        placeholder: 'Enter left value',
+        elementType: 'text-field',
+        title: 'Left value:',
+      }
+
+    return {
+      elementType: 'picker',
+      placeholder: 'Select left data',
+      value: leftValue,
+      onChange: setLeftValue,
+      items: availableVariables
+        .filter(variable => variable !== rightValue)
+        .map(variable => ({ value: variable, label: variable })),
+    }
+  }
+
+  const rightElement = (): IBPicker | IBTextField => {
+    if (isRightInput || !availablePickers.right)
+      return {
+        type: 'text',
+        value: rightValue,
+        onChange: setRightValue,
+        placeholder: 'Enter right value',
+        elementType: 'text-field',
+        title: 'Right value:',
+      }
+
+    return {
+      elementType: 'picker',
+      placeholder: 'Select right data',
+      value: rightValue,
+      onChange: setRightValue,
+      items: availableVariables
+        .filter(variable => variable !== leftValue)
+        .map(variable => ({ value: variable, label: variable })),
+    }
+  }
+
+  const switchRow: Array<IBElements> = []
+
+  if (availablePickers.left)
+    switchRow.push({
+      elementType: 'switch',
+      value: isLeftInput,
+      onChange: setIsLeftInput,
+      label: 'Type left value',
+    })
+  if (availablePickers.right)
+    switchRow.push({
+      elementType: 'switch',
+      value: isRightInput,
+      onChange: setIsRightInput,
+      label: 'Type right value',
+    })
+
+  return (
+    <View padding-16 marginT-16 bg-green70 br40 key={`${key}-cCompare`}>
+      {renderDataHeader({ title: 'Compare ✔️', onCloseData })}
+      <Spacer size="xSmall" />
+      <InputBlock
+        contents={[
+          {
+            type: 'row',
+            elements: switchRow,
+            key: `ib-${key}`,
+          },
+          {
+            type: 'row',
+            elements: [
+              leftElement(),
+              { elementType: 'spacer' },
+              {
+                elementType: 'picker',
+                placeholder: '> / = / < / ..',
+                value: comparisonType,
+                onChange: setComparisonType,
+                items: ['<', '>', '==', '>=', '<='].map(comp => ({ value: comp, label: comp })),
+              },
+              { elementType: 'spacer' },
+              rightElement(),
+            ],
+            key: `${key}`,
+          },
+        ]}
+      />
+    </View>
+  )
+}
+
 export {
   renderDataFooter,
   renderDataHeader,
@@ -259,4 +389,5 @@ export {
   renderDataNumber,
   renderControlYou,
   renderControlAlexa,
+  renderControlCompare,
 }

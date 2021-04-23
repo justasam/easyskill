@@ -108,7 +108,7 @@ const renderIBSwitch = (element: IBSwitch, key: string) => {
   return (
     <View key={key} center spread paddingB-24>
       {element.label && renderLabel()}
-      <Switch {...element} onColor={colors.primary.lighter} />
+      <Switch {...element} onColor={colors.primary.lighter} onValueChange={element.onChange} />
     </View>
   )
 }
@@ -116,7 +116,11 @@ const renderIBSwitch = (element: IBSwitch, key: string) => {
 const renderIBPicker = (element: IBPicker, key: string) => {
   return (
     <View flex key={key}>
-      <Picker {...element} floatingPlaceholder useNativePicker />
+      <Picker {...element} floatingPlaceholder useNativePicker>
+        {element.items.map((item, index) => (
+          <Picker.Item {...item} key={`${item}-${index}-${key}`} />
+        ))}
+      </Picker>
     </View>
   )
 }
