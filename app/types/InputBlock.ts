@@ -10,6 +10,7 @@ type IBTextField = {
   placeholder?: string
   title?: string
   disabled?: boolean
+  error?: string
 }
 
 type IBSwitch = {

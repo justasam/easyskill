@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Picker, Switch, TextField, View } from 'react-native-ui-lib'
+import { Button, Colors, Picker, Switch, TextField, View } from 'react-native-ui-lib'
 import { colors } from '../../styles'
 import { IBButton, IBElements, IBPicker, IBProps, IBSwitch, IBTextField } from '../../types'
 import Spacer from '../Spacer'
@@ -23,6 +23,40 @@ const transformers = {
   },
 }
 
+const validations = {
+  nonEmpty: (value: string) => ({ error: !value.length, message: 'Field should not be empty' }),
+  tagsExist: (value: string, existingTags: Array<string>) => {
+    const regExp = /\{(\w+)\}/gm
+    let error = false
+    let match
+
+    while ((match = regExp.exec(value))) {
+      if (!existingTags.includes(match[1])) {
+        error = true
+        break
+      }
+    }
+
+    return { error, message: `You have not declared {${match?.[1]}} anywhere.` }
+  },
+}
+
+const runValidations = (
+  checks: Array<keyof typeof validations>,
+  value: string,
+  existingTags: Array<string>,
+) => {
+  let validationResult = { error: false, message: '' }
+
+  for (let check of checks) {
+    validationResult = validations[check](value, existingTags)
+
+    if (validationResult.error) return validationResult
+  }
+
+  return validationResult
+}
+
 const renderIBTextField = (element: IBTextField, key: string) => {
   let textTransformer
 
@@ -35,12 +69,21 @@ const renderIBTextField = (element: IBTextField, key: string) => {
         title={element.title}
         placeholder={element.placeholder}
         prefix={element.prefix}
-        underlineColor={{ focus: colors.primary.default, default: colors.text.secondary }}
-        titleColor={{ focus: colors.primary.default, default: colors.text.secondary }}
+        underlineColor={{
+          focus: colors.primary.default,
+          default: colors.text.secondary,
+          error: Colors.red30,
+        }}
+        titleColor={{
+          focus: colors.primary.default,
+          default: colors.text.secondary,
+          error: Colors.red30,
+        }}
         transformer={textTransformer}
         value={element.value}
         onChangeText={element.onChange}
         disabled={element.disabled}
+        error={element.error}
       />
     </View>
   )
@@ -117,5 +160,7 @@ const InputBlock = ({ contents }: IBProps) => {
     </>
   )
 }
+
+export { validations, runValidations }
 
 export default InputBlock

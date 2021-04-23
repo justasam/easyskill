@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TouchableOpacity, View, TextField } from 'react-native-ui-lib'
 import { SimpleLineIcons } from '@expo/vector-icons'
 
 import StyledText from '../Text'
 import { colors } from '../../styles'
 import { InputBlock, Spacer } from '..'
+import { runValidations, validations } from '../InputBlock/InputBlock'
 
 type DataHeaderProps = {
   title?: string
@@ -163,6 +164,7 @@ const renderControlYou = ({ value, setValue, onCloseData, key }: ControlYouProps
           {
             type: 'row',
             elements: [
+              { elementType: 'spacer', orientation: 'vertical', size: 'xLarge' },
               {
                 type: 'text',
                 value,
@@ -190,6 +192,8 @@ const renderControlAlexa = ({
   key,
   availableVariables,
 }: ControlAlexaProps) => {
+  const [errorMessage, setErrorMessage] = useState('')
+
   const renderVariables = () => {
     if (!availableVariables.length) return
 
@@ -197,7 +201,7 @@ const renderControlAlexa = ({
       <>
         <Spacer size="letter" />
         <StyledText size="small">
-          Available variables:{' '}
+          Available for use:{' '}
           {availableVariables.map(variable => (
             <StyledText color={colors.primary.default} bold size="small" key={`${variable}-${key}`}>
               {`{${variable}} `}
@@ -221,12 +225,22 @@ const renderControlAlexa = ({
               {
                 type: 'text',
                 value,
-                onChange: setValue,
+                onChange: (newValue: string) => {
+                  const validationsRes = runValidations(
+                    ['nonEmpty', 'tagsExist'],
+                    newValue,
+                    availableVariables,
+                  )
+                  if (validationsRes.error) setErrorMessage(validationsRes.message)
+                  else setErrorMessage('')
+                  setValue(newValue)
+                },
                 placeholder: availableVariables.length
                   ? `E.g. It is {${availableVariables[0]}}`
                   : 'E.g. Your score is {score}',
                 elementType: 'text-field',
                 title: 'Enter what Alexa should say:',
+                error: errorMessage,
               },
             ],
             key: `${key}`,
